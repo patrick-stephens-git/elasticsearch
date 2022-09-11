@@ -4,7 +4,10 @@ import pandas as pd
 # Don't collapse Pandas Dataframes:
 pd.set_option('display.max_rows', None, 'display.max_columns', None)
 
-query = "cashier"
+query = 'minimum age 18 years old'
+compound_phrases = ['minimum age','18 years old']
+entity_category = 'age'
+entity_value = '18'
 
 ################################################################################################
 ################################################################################################
@@ -15,7 +18,7 @@ query = "cashier"
 query_body = {
   "query" : {
     "match" : {
-      "Description" : {
+      "description" : {
         "query" : "{0}".format(query)
       }
     }
@@ -30,7 +33,7 @@ query_body = {
   "query" : {
     "match_phrase" : {
       "Description" : {
-        "query" : "masters degree required",
+        "query" : "{0}".format(query),
          "slop" : "0"
       }
     }
@@ -44,8 +47,8 @@ query_body = {
 query_body = {
   "query" : {
     "multi_match" : {
-        "query" : "work from home",
-       "fields" : ["Description","title"]
+        "query" : "{0}".format(query),
+       "fields" : ["description","title"]
     }
   }
 }
@@ -71,7 +74,7 @@ query_body = {
 query_body = {
     "query": {
         "terms" : {
-            "_id": ['771107783', '771110613']
+            "_id": ['7711083', '7710613']
         }
     }
 }
@@ -83,9 +86,9 @@ query_body = {
 query_body = {
     "query": {
         "range" : {
-            "CustomerId" : {
-                "gte" : 37135352,
-                "lte" : 37135353
+            "id" : {
+                "gte" : 12135352,
+                "lte" : 12135353
             }
         }
     }
@@ -98,7 +101,7 @@ query_body = {
 query_body = {
     "query": {
         "regexp" : {
-            "CustomerNameCityState" : "Forest City.*"
+            "city" : "Austin.*"
         }
     }
 }
@@ -110,7 +113,7 @@ query_body = {
 query_body = {
     "query": {
         "exists": {
-            "field": "CustomerNameCityState"
+            "field": "city"
         }
     }
 }
@@ -121,11 +124,6 @@ query_body = {
 ################################################################################################
 ## Boolean Query (Compound Query) - Returns documents by wrapping together multiple queries, e.g: combine the score, change behavior of wrapped queries, switch query context to filter context, any of the above combined
 ##
-query = 'minimum age 15 years old'
-entity = 'age'
-age_entity = '15'
-compound_phrase = '15 years old'
-
 query_body = {"query" : 
               {"bool" : 
                {"must" : 
